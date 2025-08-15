@@ -1,0 +1,25 @@
+{
+  "scan_id": "20250812T050655Z",
+  "target": "fortinet.com",
+  "started_at": "2025-08-12T05:06:55.034379+00:00",
+  "ended_at": "2025-08-12T05:06:56.676465+00:00",
+  "results": [
+    {
+      "port": 80,
+      "protocol": "tcp",
+      "status": "open",
+      "service": "http",
+      "banner": "HTTP/1.1 301 Moved Permanently\r\nLocation: https://www.fortinet.com/\r\nContent-Length: 98\r\nContent-Type: text/html\r\n\r\n<head><title>Object moved permanently</title></head><body><h1>Object Moved Permanently</h1></body>",
+      "vulnerabilities": []
+    },
+    {
+      "port": 443,
+      "protocol": "tcp",
+      "status": "open",
+      "service": "https",
+      "banner": null,
+      "vulnerabilities": []
+    }
+  ],
+  "errors": []
+}

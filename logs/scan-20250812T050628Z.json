@@ -1,0 +1,189 @@
+{
+  "scan_id": "20250812T050628Z",
+  "target": "fortinet.com",
+  "started_at": "2025-08-12T05:06:28.029310+00:00",
+  "ended_at": "2025-08-12T05:06:29.038066+00:00",
+  "results": [
+    {
+      "port": 20,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 21,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 22,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 23,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 24,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 25,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 26,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 27,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 28,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 29,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 30,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 31,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 32,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 33,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 34,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 35,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 36,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 37,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 38,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 39,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 40,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 41,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 42,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 43,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 44,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 45,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 46,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 47,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 48,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 49,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 50,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 51,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 52,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 53,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 54,
+      "protocol": "tcp",
+      "status": "closed"
+    },
+    {
+      "port": 55,
+      "protocol": "tcp",
+      "status": "closed"
+    }
+  ],
+  "errors": []
+}

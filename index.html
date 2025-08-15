@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cross-Platform Vulnerability Scanner</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background:#0f172a; color:#e2e8f0; }
+    .container { max-width: 900px; margin: 40px auto; padding: 24px; background:#111827; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    h1 { margin-top: 0; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    label { display:block; margin-bottom:6px; color:#93c5fd; font-weight:600; }
+    input[type=text] { width:100%; padding:10px; background:#0b1220; color:#e2e8f0; border:1px solid #1f2937; border-radius:8px; }
+    .row { margin: 12px 0; }
+    .switch { display:flex; align-items:center; gap:8px; }
+    button { padding:10px 16px; background:#2563eb; border:none; color:white; border-radius:8px; cursor:pointer; font-weight:600; }
+    button[disabled] { background:#1f2937; cursor:not-allowed; }
+    .columns { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    pre, .panel { background:#0b1220; border:1px solid #1f2937; padding:12px; border-radius:8px; }
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding:8px; border-bottom:1px solid #1f2937; text-align:left; }
+    .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; }
+    .sev-info { background:#374151; }
+    .sev-low { background:#065f46; }
+    .sev-medium { background:#92400e; }
+    .sev-high { background:#7f1d1d; }
+    .sev-critical { background:#7c2d12; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Cross-Platform Network Vulnerability Scanner</h1>
+    <p>Backend: Python scanning API (port 5000). Reports: Perl service (port 3000).</p>
+
+    <div class="grid">
+      <div class="row">
+        <label for="target">Target Hostname or IP</label>
+        <input type="text" id="target" placeholder="e.g. 127.0.0.1 or example.com" />
+      </div>
+      <div class="row">
+        <label for="ports">Ports (comma and dash ranges)</label>
+        <input type="text" id="ports" placeholder="e.g. 22,80,443,8000-8100" />
+      </div>
+      <div class="row switch">
+        <input type="checkbox" id="enum" checked />
+        <label for="enum">Service Enumeration</label>
+      </div>
+      <div class="row switch">
+        <input type="checkbox" id="vuln" checked />
+        <label for="vuln">Vulnerability Checks</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <button id="runBtn">Run Scan</button>
+      <select id="severity">
+        <option value="info">Severity: Info+</option>
+        <option value="low">Severity: Low+</option>
+        <option value="medium">Severity: Medium+</option>
+        <option value="high">Severity: High+</option>
+        <option value="critical">Severity: Critical</option>
+      </select>
+    </div>
+
+    <div class="columns">
+      <div class="panel">
+        <h3>Open Ports</h3>
+        <table id="portsTable">
+          <thead><tr><th>Port</th><th>Service</th><th>Banner</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h3>Vulnerabilities</h3>
+        <div id="vulns"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <h3>Raw Scan JSON</h3>
+      <pre id="raw"></pre>
+    </div>
+  </div>
+
+  <script>
+    const runBtn = document.getElementById('runBtn');
+    const targetEl = document.getElementById('target');
+    const portsEl = document.getElementById('ports');
+    const enumEl = document.getElementById('enum');
+    const vulnEl = document.getElementById('vuln');
+    const rawPre = document.getElementById('raw');
+    const portsTableBody = document.querySelector('#portsTable tbody');
+    const vulnsDiv = document.getElementById('vulns');
+    const severitySel = document.getElementById('severity');
+
+    let lastScan = null;
+
+    function sevClass(sev){ return `tag sev-${(sev||'info').toLowerCase()}`; }
+
+    function renderReport(report){
+      // Open ports
+      portsTableBody.innerHTML = '';
+      (report.open_ports || []).forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${p.port}</td><td>${p.service||''}</td><td>${p.banner||''}</td>`;
+        portsTableBody.appendChild(tr);
+      });
+
+      // Vulns
+      const order = ['critical','high','medium','low','info'];
+      vulnsDiv.innerHTML = '';
+      order.forEach(sev => {
+        const items = (report.vulnerabilities_by_severity||{})[sev] || [];
+        if(items.length === 0) return;
+        const h = document.createElement('h4');
+        h.textContent = `${sev.toUpperCase()} (${items.length})`;
+        vulnsDiv.appendChild(h);
+        items.forEach(v => {
+          const div = document.createElement('div');
+          div.className = 'row';
+          div.innerHTML = `<span class="${sevClass(v.severity)}">${v.severity}</span> <strong>${v.id}</strong> on port ${v.port} - ${v.description}<br/><small>${v.evidence || ''}</small>`;
+          vulnsDiv.appendChild(div);
+        });
+      });
+    }
+
+    async function generateReport(scan, severity){
+      const url = `http://localhost:3000/report?severity=${encodeURIComponent(severity)}`;
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ scan })
+      });
+      if(!resp.ok){ throw new Error('Report service error'); }
+      return await resp.json();
+    }
+
+    runBtn.addEventListener('click', async () => {
+      const target = targetEl.value.trim();
+      if(!target){ alert('Please enter a target'); return; }
+      runBtn.disabled = true;
+      rawPre.textContent = 'Scanning...';
+      portsTableBody.innerHTML = '';
+      vulnsDiv.innerHTML = '';
+
+      try {
+        const scanResp = await fetch('http://localhost:5000/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            target,
+            ports: portsEl.value.trim(),
+            service_enumeration: enumEl.checked,
+            vulnerability_checks: vulnEl.checked
+          })
+        });
+        const scan = await scanResp.json();
+        lastScan = scan;
+        rawPre.textContent = JSON.stringify(scan, null, 2);
+
+        const reportResp = await generateReport(scan, severitySel.value);
+        renderReport(reportResp.report);
+      } catch (e) {
+        console.error(e);
+        rawPre.textContent = `Error: ${e}`;
+      } finally {
+        runBtn.disabled = false;
+      }
+    });
+
+    severitySel.addEventListener('change', async () => {
+      if(!lastScan) return;
+      try{
+        const reportResp = await generateReport(lastScan, severitySel.value);
+        renderReport(reportResp.report);
+      }catch(e){ console.error(e); }
+    });
+  </script>
+</body>
+</html>
