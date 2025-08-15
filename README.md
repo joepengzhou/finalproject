@@ -28,7 +28,7 @@ This example demonstrates a decoupled, cross-platform network vulnerability scan
 1) Create and activate Python venv (recommended) and install deps:
 
 ```bash
-cd example_project
+cd finalproject
 python3 -m venv ../venv
 source ../venv/bin/activate
 pip install Flask Flask-Cors
@@ -49,7 +49,7 @@ morbo parser_app.pl
 
 4) Open the UI:
 
-- Open `example_project/index.html` in a browser.
+- Open `finalproject/index.html` in a browser.
 - Enter a target (e.g., `127.0.0.1`) and ports (e.g., `22,80,443,8000-8100`).
 - Click "Run Scan" to see open ports and grouped vulnerabilities. Use the severity filter to refine.
 
@@ -58,4 +58,4 @@ morbo parser_app.pl
 - Scanning and banner grabbing operate over TCP without special privileges. Some services may throttle or block banners.
 - Vulnerability checks are heuristic examples; integrate a real feed (e.g., NVD) for production.
 - CORS is enabled on both services to allow the static UI to communicate with Python (5000) and Perl (3000).
-- Logs write to `example_project/logs/` for reproducible reporting and automation.
+- Logs write to `finalproject/logs/` for reproducible reporting and automation.
