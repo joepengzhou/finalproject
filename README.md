@@ -56,6 +56,6 @@ morbo parser_app.pl
 ## Notes
 
 - Scanning and banner grabbing operate over TCP without special privileges. Some services may throttle or block banners.
-- Vulnerability checks are heuristic examples; integrate a real feed (e.g., NVD) for production.
+- Vulnerability checks are just examples; integrate a real feed for production.
 - CORS is enabled on both services to allow the static UI to communicate with Python (5000) and Perl (3000).
 - Logs write to `finalproject/logs/` for reproducible reporting and automation.
