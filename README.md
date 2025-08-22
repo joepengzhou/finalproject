@@ -1,6 +1,6 @@
 # Cross-Platform Network Vulnerability Scanner (Polyglot)
 
-This example demonstrates a decoupled, cross-platform network vulnerability scanner and reporter:
+This project demonstrates a decoupled, cross-platform network vulnerability scanner and reporter:
 
 - Python (Flask): Core scanning API for TCP port scanning, service enumeration, and simple vulnerability checks.
 - Perl (Mojolicious): Report generation and filtering from scan logs or posted results.
